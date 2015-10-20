@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 public class AssetLoader : MonoBehaviour {
+
+	public Dictionary<string, GameObject> prefabs = new Dictionary<string, GameObject>();
 
 	void Start() {
 		StartCoroutine (DownloadAndCache());
@@ -31,11 +34,20 @@ public class AssetLoader : MonoBehaviour {
 			foreach (UnityEngine.Object o in request.allAssets) {
 				GameObject obj = o as GameObject;
 				Debug.Log(obj.name);
+				AddPrefab(obj);
 			}
 			// Unload the AssetBundles compressed contents to conserve memory
 			bundle.Unload(false);
 			
 		} // memory is freed from the web stream (www.Dispose() gets called implicitly)
+
+		ObjectSelector objSelector = GameObject.Find ("ObjectSelector").GetComponent ("ObjectSelector") as ObjectSelector;
+		objSelector.enabled = true;
+	}
+
+	public void AddPrefab(GameObject prefab)
+	{
+		prefabs.Add(prefab.name, prefab);
 	}
 	
 	// Update is called once per frame
