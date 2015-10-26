@@ -5,9 +5,10 @@ using System.Collections.Generic;
 
 public class AssetLoader : MonoBehaviour {
 
-	public Dictionary<string, GameObject> prefabs = new Dictionary<string, GameObject>();
+	AssetManager assetManager;
 
 	void Start() {
+		assetManager = gameObject.GetComponent ("AssetManager") as AssetManager;
 		StartCoroutine (DownloadAndCache());
 	}
 
@@ -41,13 +42,20 @@ public class AssetLoader : MonoBehaviour {
 			
 		} // memory is freed from the web stream (www.Dispose() gets called implicitly)
 
+		// enable dependent components
 		ObjectSelector objSelector = GameObject.Find ("ObjectSelector").GetComponent ("ObjectSelector") as ObjectSelector;
 		objSelector.enabled = true;
+
+		ObjectList objList = GameObject.Find ("ObjectList").GetComponent ("ObjectList") as ObjectList;
+		objList.enabled = true;
+
+		ParameterList paramList = GameObject.Find ("ParameterList").GetComponent ("ParameterList") as ParameterList;
+		paramList.enabled = true;
 	}
 
 	public void AddPrefab(GameObject prefab)
 	{
-		prefabs.Add(prefab.name, prefab);
+		assetManager.prefabs.Add(prefab.name, prefab);
 	}
 	
 	// Update is called once per frame
