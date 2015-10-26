@@ -50,6 +50,10 @@ namespace Helper {
 
 			return new Bounds ((max+min)/2,max-min);
 		}
+
+		public static bool PointInRect(Vector2 point, Rect rect) {
+			return (point.x >= rect.xMin && point.x <= rect.xMax && point.y >= rect.yMin && point.y <= rect.yMax);
+		}
 	}
 }
 
