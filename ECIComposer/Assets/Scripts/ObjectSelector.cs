@@ -1,12 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ObjectSelector : MonoBehaviour {
 
+public class ObjectSelector : MonoBehaviour {
+	private float distance;
+	private RaycastHit rayhit;
+	private bool lockObj;
+	private GameObject collideObj;
+	private Vector3 posObj;
 	public int inspectorWidth = 200;
 	public int inspectorHeight = 300;
 	public int inspectorMargin = 100;
-
+	
+	RaycastHit hit;
 	Vector2 scrollPosition;
 
 	Vector2 inspectorPosition;
@@ -35,46 +41,60 @@ public class ObjectSelector : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetMouseButtonDown (0)) {
-			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-			RaycastHit hit;
+		//new code for transforming object position (click and drag)
+		if (Input.GetMouseButton (0)) {
 			// Casts the ray and get the first game object hit
-			Physics.Raycast (ray, out hit);
-			if (hit.collider == null){
-				//Debug.Log ("none");
-				if (!Helper.Helper.PointInRect(new Vector2(Input.mousePosition.x, Screen.height-Input.mousePosition.y), inspectorRect)) {
+			var ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+			var hit = Physics.Raycast (ray.origin, ray.direction, out rayhit);
+
+			if (hit && !lockObj) {
+				collideObj = rayhit.collider.gameObject;
+				distance = rayhit.distance;
+				Debug.Log (collideObj.name);
+			}
+
+			if (!hit && Input.GetMouseButtonDown (0)) {
+			Debug.Log ("none");
+			}
+			
+			lockObj = true;
+			posObj = ray.origin + distance * ray.direction;
+			collideObj.transform.position = new Vector3 (posObj.x, posObj.y, collideObj.transform.position.z);
+
+			if (!Helper.Helper.PointInRect (new Vector2 (Input.mousePosition.x, Screen.height - Input.mousePosition.y), inspectorRect)) {
+				if (collideObj.transform.name != inspectorObject) {
 					DrawInspector = false;
 				}
 			}
-			else{
-				//Debug.Log (hit.transform.name);
-				if (!Helper.Helper.PointInRect(new Vector2(Input.mousePosition.x, Screen.height-Input.mousePosition.y), inspectorRect)) {
-					if (hit.transform.name != inspectorObject) {
-						DrawInspector = false;
-					}
-				}
+	
+		}else{
+			lockObj = false;
+			if (!Helper.Helper.PointInRect (new Vector2 (Input.mousePosition.x, Screen.height - Input.mousePosition.y), inspectorRect)) {
+				DrawInspector = false;
 			}
 		}
-		else
+
 		if (Input.GetMouseButtonDown (1)) {
 			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 			RaycastHit hit;
 			// Casts the ray and get the first game object hit
 			Physics.Raycast (ray, out hit);
-			if (hit.collider == null){
-				if (!Helper.Helper.PointInRect(new Vector2(Input.mousePosition.x, Screen.height-Input.mousePosition.y), inspectorRect)) {
+			if (hit.collider == null) {
+				if (!Helper.Helper.PointInRect (new Vector2 (Input.mousePosition.x, Screen.height - Input.mousePosition.y), inspectorRect)) {
 					DrawInspector = false;
 				}
-			}
-			else {
+			} else {
 				DrawInspector = true;
-				scrollPosition = new Vector2(0,0);
+				scrollPosition = new Vector2 (0, 0);
 				inspectorObject = hit.transform.name;
-				inspectorPosition = new Vector2(Input.mousePosition.x, Screen.height-Input.mousePosition.y);
+				inspectorPosition = new Vector2 (Input.mousePosition.x, Screen.height - Input.mousePosition.y);
 			}
 		}
+
 	}
 
+
+	
 	void OnGUI () {
 		if (DrawInspector) {
 			inspectorPositionAdjX = inspectorPosition.x;
