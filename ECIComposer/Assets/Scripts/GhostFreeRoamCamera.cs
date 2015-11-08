@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+using Helper;
+
 [RequireComponent(typeof(Camera))]
 public class GhostFreeRoamCamera : MonoBehaviour
 {
@@ -17,21 +19,32 @@ public class GhostFreeRoamCamera : MonoBehaviour
 	public float cursorSensitivity = 0.025f;
 	public bool cursorToggleAllowed = true;
 	public KeyCode cursorToggleButton = KeyCode.Escape;
+
+	Inspector inspector;
+	ObjectList objectList;
+	ParameterList parameterList;
 	
-	private float currentSpeed = 0f;
-	private bool moving = false;
-	private bool togglePressed = false;
-	
-	private void OnEnable()
+	float currentSpeed = 0f;
+	bool moving = false;
+	bool togglePressed = false;
+
+	void Start()
+	{
+		inspector = GameObject.Find ("Inspector").GetComponent ("Inspector") as Inspector;
+		objectList = GameObject.Find ("ObjectList").GetComponent ("ObjectList") as ObjectList;
+		parameterList = GameObject.Find ("ParameterList").GetComponent ("ParameterList") as ParameterList;
+	}
+
+	void OnEnable()
 	{
 		if (cursorToggleAllowed)
 		{
-			Screen.lockCursor = true;
-			Cursor.visible = false;
+			Cursor.lockState = CursorLockMode.None;
+			Cursor.visible = true;
 		}
 	}
 	
-	private void Update()
+	void Update()
 	{
 		if (allowMovement)
 		{
@@ -60,10 +73,15 @@ public class GhostFreeRoamCamera : MonoBehaviour
 		
 		if (allowRotation)
 		{
-			Vector3 eulerAngles = transform.eulerAngles;
-			eulerAngles.x += -Input.GetAxis("Mouse Y") * 359f * cursorSensitivity;
-			eulerAngles.y += Input.GetAxis("Mouse X") * 359f * cursorSensitivity;
-			transform.eulerAngles = eulerAngles;
+			if (((Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)) && Input.GetMouseButton(0) && 
+			    Helper.Helper.PointOutsideMaskedAreas(new Vector2 (Input.mousePosition.x, Screen.height - Input.mousePosition.y),
+			                                      new Rect[]{inspector.InspectorRect,objectList.bgRect,parameterList.bgRect})))
+			{
+				Vector3 eulerAngles = transform.eulerAngles;
+				eulerAngles.x += -Input.GetAxis("Mouse Y") * 359f * cursorSensitivity;
+				eulerAngles.y += Input.GetAxis("Mouse X") * 359f * cursorSensitivity;
+				transform.eulerAngles = eulerAngles;
+			}
 		}
 		
 		if (cursorToggleAllowed)
@@ -73,7 +91,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
 				if (!togglePressed)
 				{
 					togglePressed = true;
-					Screen.lockCursor = !Screen.lockCursor;
+					Cursor.lockState = (Cursor.lockState == CursorLockMode.None) ? CursorLockMode.Locked : CursorLockMode.None;
 					Cursor.visible = !Cursor.visible;
 				}
 			}
@@ -86,7 +104,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
 		}
 	}
 	
-	private void CheckMove(KeyCode keyCode, ref Vector3 deltaPosition, Vector3 directionVector)
+	void CheckMove(KeyCode keyCode, ref Vector3 deltaPosition, Vector3 directionVector)
 	{
 		if (Input.GetKey(keyCode))
 		{

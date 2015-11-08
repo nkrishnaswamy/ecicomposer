@@ -5,33 +5,46 @@ using System.Collections.Generic;
 public class ObjectList : MonoBehaviour {
 
 	AssetManager assetManager;
+	ParameterList parameterList;
 
 	int bgLeft = Screen.width/48;
 	int bgTop = Screen.height/24;
 	int bgWidth = 9*Screen.width/48;
-	int bgHeight = 10*Screen.height/12;
+	int bgHeight = 37*Screen.height/48;
+
+	public Rect bgRect;
 	
 	Vector2 scrollPosition;
 	
 	string[] listItems;
 	
 	List<string> objects = new List<string>();
+	public List<string> Objects {
+		get { return objects; }
+		set {
+			objects = value;
+			listItems = objects.ToArray ();
+		}
+	}
 	
 	int selected = -1;
 
-	string objectSelected = "";
+	public string objectSelected = "";
 	
 	GUIStyle customStyle;
 
 	// Use this for initialization
 	void Start () {
 		assetManager = GameObject.Find ("AssetManager").GetComponent ("AssetManager") as AssetManager;
+		parameterList = GameObject.Find ("ParameterList").GetComponent ("ParameterList") as ParameterList;
 
 		foreach (KeyValuePair<string, GameObject> kv in assetManager.prefabs) {
 			objects.Add(kv.Key);
 		}
 		
 		listItems = objects.ToArray ();
+
+		bgRect = new Rect (bgLeft, bgTop, bgWidth, bgHeight);
 	}
 	
 	// Update is called once per frame
@@ -40,7 +53,7 @@ public class ObjectList : MonoBehaviour {
 	}
 
 	void OnGUI () {
-		GUILayout.BeginArea(new Rect(bgLeft, bgTop, bgWidth, bgHeight), GUI.skin.window);
+		GUILayout.BeginArea(bgRect, GUI.skin.window);
 		scrollPosition = GUILayout.BeginScrollView(scrollPosition, false, false); 
 		GUILayout.BeginVertical (GUI.skin.box);
 		
@@ -50,6 +63,14 @@ public class ObjectList : MonoBehaviour {
 
 		if (selected >= 0) {
 			objectSelected = listItems [selected];
+
+			List<string> paramList = new List<string>();
+			
+			if (parameterList.availableParams.ContainsKey(objectSelected)) {
+				paramList.AddRange(parameterList.availableParams[objectSelected]);
+			}
+
+			parameterList.listItems = paramList.ToArray();
 		}
 
 		GUILayout.EndVertical();
@@ -63,6 +84,12 @@ public class ObjectList : MonoBehaviour {
 		GUI.enabled = (selected != -1);
 		if (GUI.Button(new Rect(bgLeft, bgTop+bgHeight+Screen.height/48, bgWidth, 25),new GUIContent("Add"))){
 			assetManager.InstantiateObject(objectSelected);
+		}
+		GUI.enabled = true;
+
+		GUI.enabled = false;
+		if (GUI.Button(new Rect(bgLeft, bgTop+bgHeight+(Screen.height/48)+30, bgWidth, 25),new GUIContent("Export Assets"))){
+			assetManager.ExportAssets();
 		}
 		GUI.enabled = true;
 	}

@@ -20,7 +20,8 @@ public class AssetLoader : MonoBehaviour {
 			yield return null;
 
 		// Load the AssetBundle file from Cache if it exists with the same version or download and store it in the cache
-		using(WWW www = WWW.LoadFromCacheOrDownload ("http://dominic.cs-i.brandeis.edu/cwc/assets/assets", 1)){
+		//Debug.Log (Caching.CleanCache());
+		using(WWW www = WWW.LoadFromCacheOrDownload ("http://dominic.cs-i.brandeis.edu/cwc/assets/demoassets", 1)){
 			yield return www;
 			if (www.error != null)
 				throw new Exception("WWW download had an error:" + www.error);

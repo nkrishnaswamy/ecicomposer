@@ -7,10 +7,13 @@ using Helper;
 public class AssetManager : MonoBehaviour {
 
 	public Dictionary<string, GameObject> prefabs = new Dictionary<string, GameObject>();
-
+	ObjectSelector objSelector;
+	ObjectList objList;
+	
 	// Use this for initialization
 	void Start () {
-
+		objSelector = GameObject.Find ("ObjectSelector").GetComponent ("ObjectSelector") as ObjectSelector;
+		objList = GameObject.Find ("ObjectList").GetComponent ("ObjectList") as ObjectList;
 	}
 	
 	// Update is called once per frame
@@ -20,15 +23,55 @@ public class AssetManager : MonoBehaviour {
 
 	public void InstantiateObject (string objName) {
 		Debug.Log ("Instantiate " + objName);
-		GameObject go = (GameObject)GameObject.Instantiate (prefabs [objName], new Vector3(), new Quaternion());
-		BoxCollider collider = go.AddComponent<BoxCollider>();
-		Bounds bounds = Helper.Helper.GetObjectBounds (go);
-		Debug.Log (bounds.size);
-		collider.center = new Vector3 (bounds.center.x / go.transform.lossyScale.x,
-		                               bounds.center.y / go.transform.lossyScale.y,
-		                               bounds.center.z / go.transform.lossyScale.z);
-		collider.size = new Vector3 (bounds.size.x / go.transform.lossyScale.x,
-									 bounds.size.y / go.transform.lossyScale.y,
-		                             bounds.size.z / go.transform.lossyScale.z);
+		GameObject go = (GameObject)GameObject.Instantiate (prefabs [objName]);
+		go.transform.position = Vector3.zero;
+		go.SetActive (true);
+		go.name = go.name.Replace ("(Clone)", "");
+
+		foreach (Transform child in go.GetComponentsInChildren<Transform>()) {
+			if (child.gameObject.GetComponent<MeshFilter>() != null) {
+				//Debug.Log (child.name);
+				BoxCollider collider = child.gameObject.AddComponent<BoxCollider> ();
+				Bounds bounds = Helper.Helper.GetObjectBounds (child.gameObject);
+				//Debug.Log (bounds.size);
+				collider.center = bounds.center;
+				collider.size = bounds.size;
+			}
+		}
+
+		go.AddComponent<ComposerEntity> ();
+
+		MeshRenderer[] renderers = go.GetComponentsInChildren<MeshRenderer> ();
+		foreach (MeshRenderer renderer in renderers) {
+			renderer.gameObject.AddComponent<Outliner> ();
+		}
+		objSelector.selectedObjects.Clear ();
+		objSelector.selectedObjects.Add (go);
+	}
+
+	public void ReifyAs (string name, List<GameObject> selectedObjects) {
+		float x = 0.0f, y = 0.0f, z = 0.0f;
+		foreach (GameObject obj in selectedObjects) {
+			x += obj.transform.position.x;
+			y += obj.transform.position.y;
+			z += obj.transform.position.z;
+		}
+
+		GameObject newObj = new GameObject (name);
+		newObj.transform.position = new Vector3 (x / selectedObjects.Count, y / selectedObjects.Count, z / selectedObjects.Count);
+
+		foreach (GameObject obj in selectedObjects) {
+			obj.transform.parent = newObj.transform;
+		}
+
+		prefabs.Add (newObj.name, newObj);
+		List<string> tempObjs = new List<string> (objList.Objects);
+		tempObjs.Add(newObj.name);
+		objList.Objects = tempObjs;
+
+		newObj.AddComponent<ComposerEntity> ();
+	}
+
+	public void ExportAssets() {
 	}
 }
