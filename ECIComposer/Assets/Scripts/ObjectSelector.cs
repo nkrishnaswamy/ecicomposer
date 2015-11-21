@@ -16,7 +16,8 @@ public class ObjectSelector : MonoBehaviour {
 	private bool lockObj;
 	private GameObject collideObj;
 	private Vector3 posObj;
-
+	private Vector3 offset;
+	private Vector3 screenPoint;
 	// Use this for initialization
 	void Start () {
 		inspector = GameObject.Find ("Inspector").GetComponent ("Inspector") as Inspector;
@@ -108,7 +109,9 @@ public class ObjectSelector : MonoBehaviour {
 
 				lockObj = true;
 				posObj = ray.origin + distance * ray.direction;
-				collideObj.transform.position = new Vector3 (posObj.x, posObj.y, posObj.z);
+				screenPoint = Camera.main.WorldToScreenPoint(collideObj.transform.position);
+				offset = posObj - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
+				collideObj.transform.position = new Vector3 (posObj.x, posObj.y, posObj.z) - offset;
 			}
 		}
 		else {
