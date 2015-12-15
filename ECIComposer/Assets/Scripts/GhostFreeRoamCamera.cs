@@ -28,11 +28,18 @@ public class GhostFreeRoamCamera : MonoBehaviour
 	bool moving = false;
 	bool togglePressed = false;
 
+
+	private float speedMod = 10.0f;//a speed modifier
+	private Vector3 point;//the coord to the point where the camera looks at
+
 	void Start()
 	{
 		inspector = GameObject.Find ("Inspector").GetComponent ("Inspector") as Inspector;
 		objectList = GameObject.Find ("ObjectList").GetComponent ("ObjectList") as ObjectList;
 		parameterList = GameObject.Find ("ParameterList").GetComponent ("ParameterList") as ParameterList;
+
+		point = inspector.transform.position;//get target's coords
+		transform.LookAt(point);//makes the camera look to it
 	}
 
 	void OnEnable()
@@ -72,16 +79,31 @@ public class GhostFreeRoamCamera : MonoBehaviour
 		}
 		
 		if (allowRotation)
-		{
+		{	
+			
 			if (((Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)) && Input.GetMouseButton(0) && 
 			    Helper.Helper.PointOutsideMaskedAreas(new Vector2 (Input.mousePosition.x, Screen.height - Input.mousePosition.y),
 			                                      new Rect[]{inspector.InspectorRect,objectList.bgRect,parameterList.bgRect})))
 			{
-				Vector3 eulerAngles = transform.eulerAngles;
-				eulerAngles.x += -Input.GetAxis("Mouse Y") * 359f * cursorSensitivity;
-				eulerAngles.y += Input.GetAxis("Mouse X") * 359f * cursorSensitivity;
-				transform.eulerAngles = eulerAngles;
+				//Vector3 eulerAngles = transform.eulerAngles;
+				//eulerAngles.x += -Input.Rotate("Mouse Y") * 359f * cursorSensitivity;
+				//eulerAngles.y += Input.GetAxis("Mouse X") * 359f * cursorSensitivity;
+				//transform.eulerAngles = eulerAngles;
+				if (Input.GetAxis("Mouse X")<0) { //left
+					transform.RotateAround (inspector.transform.position, Vector3.up, 100 * Time.deltaTime);
+				}
+				if (Input.GetAxis("Mouse X")>0) { //right
+					transform.RotateAround (inspector.transform.position, Vector3.down, 100 * Time.deltaTime);
+				}
+				if (Input.GetAxis("Mouse Y")<0) { //backward
+					
+				}
+				if (Input.GetAxis("Mouse Y")<0) { //forward
+					
+				}
 			}
+
+		
 		}
 		
 		if (cursorToggleAllowed)
