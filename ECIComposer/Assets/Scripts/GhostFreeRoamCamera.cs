@@ -29,17 +29,12 @@ public class GhostFreeRoamCamera : MonoBehaviour
 	bool togglePressed = false;
 
 
-	private float speedMod = 10.0f;//a speed modifier
-	private Vector3 point;//the coord to the point where the camera looks at
-
 	void Start()
 	{
 		inspector = GameObject.Find ("Inspector").GetComponent ("Inspector") as Inspector;
 		objectList = GameObject.Find ("ObjectList").GetComponent ("ObjectList") as ObjectList;
 		parameterList = GameObject.Find ("ParameterList").GetComponent ("ParameterList") as ParameterList;
 
-		point = inspector.transform.position;//get target's coords
-		transform.LookAt(point);//makes the camera look to it
 	}
 
 	void OnEnable()
