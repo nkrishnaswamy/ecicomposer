@@ -91,10 +91,10 @@ public class GhostFreeRoamCamera : MonoBehaviour
 					transform.RotateAround (inspector.transform.position, Vector3.down, 100 * Time.deltaTime);
 				}
 				if (Input.GetAxis("Mouse Y")<0) { //backward
-					
+					transform.RotateAround (inspector.transform.position, Vector3.right, 100 * Time.deltaTime);
 				}
-				if (Input.GetAxis("Mouse Y")<0) { //forward
-					
+				if (Input.GetAxis("Mouse Y")>0) { //forward
+					transform.RotateAround (inspector.transform.position, Vector3.left, 100 * Time.deltaTime);
 				}
 			}
 
