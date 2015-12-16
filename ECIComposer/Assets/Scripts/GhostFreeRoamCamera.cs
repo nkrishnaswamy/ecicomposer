@@ -12,6 +12,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
 	public bool allowRotation = true;
 	
 	public KeyCode forwardButton = KeyCode.W;
+	//public bool forwardScroll = Input.GetAxis("Mouse ScrollWheel") > 0;
 	public KeyCode backwardButton = KeyCode.S;
 	public KeyCode rightButton = KeyCode.D;
 	public KeyCode leftButton = KeyCode.A;
@@ -49,7 +50,8 @@ public class GhostFreeRoamCamera : MonoBehaviour
 	void Update()
 	{
 		if (allowMovement)
-		{
+		{	
+			
 			bool lastMoving = moving;
 			Vector3 deltaPosition = Vector3.zero;
 			
@@ -57,12 +59,22 @@ public class GhostFreeRoamCamera : MonoBehaviour
 				currentSpeed += increaseSpeed * Time.deltaTime;
 			
 			moving = false;
+
+			if (Input.GetAxis("Mouse ScrollWheel") > 0) {
+				Debug.Log ("Hello");
+				CheckMove(ref deltaPosition, transform.forward);
+			}
+			if (Input.GetAxis("Mouse ScrollWheel") < 0) {
+				Debug.Log ("Hello");
+				CheckMove(ref deltaPosition, -transform.forward);
+			}
 			
 			CheckMove(forwardButton, ref deltaPosition, transform.forward);
 			CheckMove(backwardButton, ref deltaPosition, -transform.forward);
 			CheckMove(rightButton, ref deltaPosition, transform.right);
 			CheckMove(leftButton, ref deltaPosition, -transform.right);
-			
+
+
 			if (moving)
 			{
 				if (moving != lastMoving)
@@ -72,7 +84,9 @@ public class GhostFreeRoamCamera : MonoBehaviour
 			}
 			else currentSpeed = 0f;            
 		}
-		
+
+
+
 		if (allowRotation)
 		{	
 			
@@ -129,4 +143,13 @@ public class GhostFreeRoamCamera : MonoBehaviour
 			deltaPosition += directionVector;
 		}
 	}
+
+	void CheckMove(ref Vector3 deltaPosition, Vector3 directionVector)
+	{
+
+		moving = true;
+		deltaPosition += directionVector;
+	
+	}
+
 }
