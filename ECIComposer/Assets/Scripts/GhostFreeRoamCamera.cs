@@ -71,6 +71,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
 			if (Input.GetAxis("Mouse ScrollWheel") < 0) {
 				CheckMove(ref deltaPosition, -transform.forward);
 			}
+
 			if (Input.GetMouseButton(1) && Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)) {
 				if (Input.GetAxis("Mouse X")<0) { //left
 					CheckMove(ref deltaPosition, -transform.right);
@@ -85,10 +86,10 @@ public class GhostFreeRoamCamera : MonoBehaviour
 					CheckMove(ref deltaPosition, transform.up);
 				}
 			}
-			if(Input.GetKey(KeyCode.R)){
+
+			if (Input.GetKey(KeyCode.R)) {
 				transform.position = startPosition;
 				transform.eulerAngles = startRotation;
-
 			}
 			
 			CheckMove(forwardButton, ref deltaPosition, transform.forward);
@@ -166,6 +167,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
 		}
 	}
 
+	//overloaded CheckMove method 
 	void CheckMove(ref Vector3 deltaPosition, Vector3 directionVector)
 	{
 
