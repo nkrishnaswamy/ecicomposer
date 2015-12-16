@@ -12,10 +12,10 @@ public class GhostFreeRoamCamera : MonoBehaviour
 	public bool allowRotation = true;
 	
 	public KeyCode forwardButton = KeyCode.W;
-	//public bool forwardScroll = Input.GetAxis("Mouse ScrollWheel") > 0;
 	public KeyCode backwardButton = KeyCode.S;
 	public KeyCode rightButton = KeyCode.D;
 	public KeyCode leftButton = KeyCode.A;
+	public KeyCode resetButton = KeyCode.R;
 	
 	public float cursorSensitivity = 0.025f;
 	public bool cursorToggleAllowed = true;
@@ -24,6 +24,10 @@ public class GhostFreeRoamCamera : MonoBehaviour
 	Inspector inspector;
 	ObjectList objectList;
 	ParameterList parameterList;
+
+	//public Vector3 myCamPos = Vector3.zero;
+	Vector3 startPosition = new Vector3 (0,0,-10);
+	//Vector3 startRotation = Vector3.zero;
 	
 	float currentSpeed = 0f;
 	bool moving = false;
@@ -35,7 +39,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
 		inspector = GameObject.Find ("Inspector").GetComponent ("Inspector") as Inspector;
 		objectList = GameObject.Find ("ObjectList").GetComponent ("ObjectList") as ObjectList;
 		parameterList = GameObject.Find ("ParameterList").GetComponent ("ParameterList") as ParameterList;
-
+		//startPosition = transform.position;
 	}
 
 	void OnEnable()
@@ -65,6 +69,24 @@ public class GhostFreeRoamCamera : MonoBehaviour
 			}
 			if (Input.GetAxis("Mouse ScrollWheel") < 0) {
 				CheckMove(ref deltaPosition, -transform.forward);
+			}
+			if (Input.GetMouseButton(1) && Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)) {
+				if (Input.GetAxis("Mouse X")<0) { //left
+					CheckMove(ref deltaPosition, -transform.right);
+				}
+				if (Input.GetAxis("Mouse X")>0) { //right
+					CheckMove(ref deltaPosition, transform.right);
+				}
+				if (Input.GetAxis("Mouse Y")<0) { //backward
+					CheckMove(ref deltaPosition, -transform.up);
+				}
+				if (Input.GetAxis("Mouse Y")>0) { //forward
+					CheckMove(ref deltaPosition, transform.up);
+				}
+			}
+			if(Input.GetKey(KeyCode.R)){
+				transform.position = startPosition;
+
 			}
 			
 			CheckMove(forwardButton, ref deltaPosition, transform.forward);
