@@ -25,9 +25,9 @@ public class GhostFreeRoamCamera : MonoBehaviour
 	ObjectList objectList;
 	ParameterList parameterList;
 
-	//public Vector3 myCamPos = Vector3.zero;
+
 	Vector3 startPosition = new Vector3 (0,0,-10);
-	//Vector3 startRotation = Vector3.zero;
+	Vector3 startRotation = Vector3.zero;
 	
 	float currentSpeed = 0f;
 	bool moving = false;
@@ -86,6 +86,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
 			}
 			if(Input.GetKey(KeyCode.R)){
 				transform.position = startPosition;
+				transform.eulerAngles = startRotation;
 
 			}
 			
