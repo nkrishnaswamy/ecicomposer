@@ -26,7 +26,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
 	ParameterList parameterList;
 
 
-	Vector3 startPosition = new Vector3 (0,0,-10);
+	Vector3 startPosition = Vector3.zero;
 	Vector3 startRotation = Vector3.zero;
 	
 	float currentSpeed = 0f;
@@ -39,7 +39,8 @@ public class GhostFreeRoamCamera : MonoBehaviour
 		inspector = GameObject.Find ("Inspector").GetComponent ("Inspector") as Inspector;
 		objectList = GameObject.Find ("ObjectList").GetComponent ("ObjectList") as ObjectList;
 		parameterList = GameObject.Find ("ParameterList").GetComponent ("ParameterList") as ParameterList;
-		//startPosition = transform.position;
+		startPosition = transform.position;
+		startRotation = transform.eulerAngles;
 	}
 
 	void OnEnable()
