@@ -61,11 +61,9 @@ public class GhostFreeRoamCamera : MonoBehaviour
 			moving = false;
 
 			if (Input.GetAxis("Mouse ScrollWheel") > 0) {
-				Debug.Log ("Hello");
 				CheckMove(ref deltaPosition, transform.forward);
 			}
 			if (Input.GetAxis("Mouse ScrollWheel") < 0) {
-				Debug.Log ("Hello");
 				CheckMove(ref deltaPosition, -transform.forward);
 			}
 			
