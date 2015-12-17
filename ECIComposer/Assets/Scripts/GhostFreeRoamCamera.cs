@@ -127,16 +127,16 @@ public class GhostFreeRoamCamera : MonoBehaviour
 				//eulerAngles.y += Input.GetAxis("Mouse X") * 359f * cursorSensitivity;
 				//transform.eulerAngles = eulerAngles;
 				if (Input.GetAxis("Mouse X")<0) { //left
-					transform.RotateAround (inspector.transform.position, Vector3.down, 100 * Time.deltaTime);
+					transform.RotateAround (inspector.transform.position, Vector3.down, 80 * Time.deltaTime);
 				}
 				if (Input.GetAxis("Mouse X")>0) { //right
-					transform.RotateAround (inspector.transform.position, Vector3.up, 100 * Time.deltaTime);
+					transform.RotateAround (inspector.transform.position, Vector3.up, 80 * Time.deltaTime);
 				}
 				if (Input.GetAxis("Mouse Y")<0) { //backward
-					transform.RotateAround (inspector.transform.position, Vector3.right, 100 * Time.deltaTime);
+					transform.RotateAround (inspector.transform.position, Vector3.right, 80 * Time.deltaTime);
 				}
 				if (Input.GetAxis("Mouse Y")>0) { //forward
-					transform.RotateAround (inspector.transform.position, Vector3.left, 100 * Time.deltaTime);
+					transform.RotateAround (inspector.transform.position, Vector3.left, 80 * Time.deltaTime);
 				}
 			}
 
@@ -179,7 +179,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
 	{
 
 		moving = true;
-		deltaPosition += directionVector;
+		deltaPosition +=  directionVector;
 	
 	}
 
