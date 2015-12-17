@@ -93,13 +93,13 @@ public class GhostFreeRoamCamera : MonoBehaviour
 
 			if (Input.GetMouseButton(1) && Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)) { 
 				if (Input.GetAxis("Mouse X")<0) { //left
-					transform.Rotate(-Vector3.up, 80.0f * Time.deltaTime);
+					transform.Rotate(Vector3.down, 80.0f * Time.deltaTime);
 				}
 				if (Input.GetAxis("Mouse X")>0) { //right
 					transform.Rotate(Vector3.up, 80.0f * Time.deltaTime);
 				}
 				if (Input.GetAxis("Mouse Y")<0) { //backward
-					transform.Rotate(-Vector3.left, 80.0f * Time.deltaTime);
+					transform.Rotate(Vector3.right, 80.0f * Time.deltaTime);
 				}
 				if (Input.GetAxis("Mouse Y")>0) { //forward
 					transform.Rotate(Vector3.left, 80.0f * Time.deltaTime);
