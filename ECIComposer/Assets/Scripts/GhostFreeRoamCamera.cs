@@ -10,11 +10,14 @@ public class GhostFreeRoamCamera : MonoBehaviour
 	
 	public bool allowMovement = true;
 	public bool allowRotation = true;
-	
+
+	/*
 	public KeyCode forwardButton = KeyCode.W;
 	public KeyCode backwardButton = KeyCode.S;
 	public KeyCode rightButton = KeyCode.D;
 	public KeyCode leftButton = KeyCode.A;
+	*/
+
 	public KeyCode resetButton = KeyCode.R;
 	
 	public float cursorSensitivity = 0.025f;
@@ -91,12 +94,14 @@ public class GhostFreeRoamCamera : MonoBehaviour
 				transform.position = startPosition;
 				transform.eulerAngles = startRotation;
 			}
-			
+
+			/*
+			//WASD envoking methods 
 			CheckMove(forwardButton, ref deltaPosition, transform.forward);
 			CheckMove(backwardButton, ref deltaPosition, -transform.forward);
 			CheckMove(rightButton, ref deltaPosition, transform.right);
 			CheckMove(leftButton, ref deltaPosition, -transform.right);
-
+			*/
 
 			if (moving)
 			{
@@ -157,7 +162,8 @@ public class GhostFreeRoamCamera : MonoBehaviour
 			Cursor.visible = false;
 		}
 	}
-	
+
+	/*
 	void CheckMove(KeyCode keyCode, ref Vector3 deltaPosition, Vector3 directionVector)
 	{
 		if (Input.GetKey(keyCode))
@@ -166,6 +172,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
 			deltaPosition += directionVector;
 		}
 	}
+	*/
 
 	//overloaded CheckMove method 
 	void CheckMove(ref Vector3 deltaPosition, Vector3 directionVector)
