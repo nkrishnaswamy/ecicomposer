@@ -33,6 +33,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
 	Vector3 startRotation = Vector3.zero;
 	
 	float currentSpeed = 0f;
+	public float yRotation = 5.0F;
 	bool moving = false;
 	bool togglePressed = false;
 
@@ -87,6 +88,21 @@ public class GhostFreeRoamCamera : MonoBehaviour
 				}
 				if (Input.GetAxis("Mouse Y")>0) { //forward
 					CheckMove(ref deltaPosition, -transform.up);
+				}
+			}
+
+			if (Input.GetMouseButton(1) && Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)) { 
+				if (Input.GetAxis("Mouse X")<0) { //left
+					transform.Rotate(-Vector3.up, 80.0f * Time.deltaTime);
+				}
+				if (Input.GetAxis("Mouse X")>0) { //right
+					transform.Rotate(Vector3.up, 80.0f * Time.deltaTime);
+				}
+				if (Input.GetAxis("Mouse Y")<0) { //backward
+					transform.Rotate(-Vector3.left, 80.0f * Time.deltaTime);
+				}
+				if (Input.GetAxis("Mouse Y")>0) { //forward
+					transform.Rotate(Vector3.left, 80.0f * Time.deltaTime);
 				}
 			}
 
