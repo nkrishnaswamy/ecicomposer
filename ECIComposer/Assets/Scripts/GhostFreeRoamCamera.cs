@@ -75,7 +75,7 @@ public class GhostFreeRoamCamera : MonoBehaviour
 				CheckMove(ref deltaPosition, -transform.forward);
 			}
 
-			if (Input.GetMouseButton(1) && Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)) {
+			if (Input.GetMouseButton(2)) { //Input.GetMouseButton(1) && Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)
 				if (Input.GetAxis("Mouse X")<0) { //left
 					CheckMove(ref deltaPosition, transform.right);
 				}
