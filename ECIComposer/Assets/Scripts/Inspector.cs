@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -749,9 +750,19 @@ public class Inspector : MonoBehaviour {
 	
 	Voxeme LoadMarkup(GameObject obj) {
 		Voxeme voxml = new Voxeme();
-		
+		string text = "";
+
 		try {
-			voxml = Voxeme.Load (obj.name + ".xml");
+			/*using(WWW www = WWW("http://www.voxicon.net/cwc/voxml/" + obj.name + ".xml")){
+				yield return www;
+				if (www.error != null)
+					throw new Exception("WWW download had an error:" + www.error);
+				text = www.text;
+			}*/
+
+			if (text.Length == 0) {
+				voxml = Voxeme.Load (obj.name + ".xml");
+			}
 			
 			// assign VoxML values
 			// PRED
