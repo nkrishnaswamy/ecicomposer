@@ -744,8 +744,10 @@ public class Inspector : MonoBehaviour {
 		// EMBODIMENT
 		voxml.Embodiment.Scale = mlScale;
 		voxml.Embodiment.Movable = mlMovable;
-		
+
+	
 		voxml.Save (obj.name+".xml");
+//		voxml.SaveToServer (obj.name + ".xml");
 	}
 	
 	Voxeme LoadMarkup(GameObject obj) {
