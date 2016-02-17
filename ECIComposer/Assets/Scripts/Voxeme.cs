@@ -3,6 +3,10 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.IO;
 
+using System.Collections;
+using System.Text;
+using UnityEngine;
+
 /// <summary>
 /// LEX
 /// </summary>
@@ -94,6 +98,9 @@ public class Voxeme {
 	public Afford_Str Afford_Str = new Afford_Str();
 	public Embodiment Embodiment = new Embodiment();
 
+	public string url =  "http://voxicon.net/cwc/voxml/upload.php";
+
+	//Writing data
 	public void Save(string path)
 	{
 		XmlSerializer serializer = new XmlSerializer(typeof(Voxeme));
@@ -102,7 +109,22 @@ public class Voxeme {
 			serializer.Serialize(stream, this);
 		}
 	}
-	
+
+//	public IEnumerator SaveToServer(string path){
+		//WWW used to open local file
+//		WWW localFile = new WWW ("file:///" + path);
+//		yield return localFile;
+		//to upload file to webpage, have to use WWWForm with WWW
+//		WWWForm postForm = new WWWForm ();
+		//addBinaryData is for uploading files to web server
+		//data is read from contents of byte arrray and not from a file?
+//		postForm.AddBinaryData (path, localFile.bytes, path, "text/xml");
+		//call to php script
+//		WWW upload = new WWW (url, postForm);
+//		yield return upload;
+//	}
+
+	//Reading data
 	public static Voxeme Load(string path)
 	{
 		XmlSerializer serializer = new XmlSerializer(typeof(Voxeme));
