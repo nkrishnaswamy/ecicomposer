@@ -15,7 +15,8 @@ public class ParameterList : MonoBehaviour {
 	int bgHeight = 10*Screen.height/12;
 
 	public Rect bgRect;
-	
+	public Rect exportRect;
+
 	Vector2 scrollPosition;
 	
 	public string[] listItems;
@@ -36,6 +37,8 @@ public class ParameterList : MonoBehaviour {
 		//listItems = objects.ToArray ();
 
 		bgRect = new Rect (19 * bgLeft, bgTop, bgWidth, bgHeight);
+		//export button
+		exportRect = new Rect (bgLeft, bgTop + bgHeight + (Screen.height / 48) + 30, bgWidth, 25);
 
 		TextAsset verbList = Resources.Load ("collocations") as TextAsset;
 		string[] fLines = System.Text.RegularExpressions.Regex.Split (verbList.text, "\n|\r|\r\n");

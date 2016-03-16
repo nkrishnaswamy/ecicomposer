@@ -99,7 +99,7 @@ public class ObjectSelector : MonoBehaviour {
 		if (Input.GetMouseButton(0) ) {
 			//detects the 3 areas masked
 			if (Helper.Helper.PointOutsideMaskedAreas (new Vector2 (Input.mousePosition.x, Screen.height - Input.mousePosition.y), 
-				    new Rect[]{ inspector.InspectorRect, objectList.bgRect, parameterList.bgRect })) {
+				new Rect[]{ inspector.InspectorRect, objectList.bgRect, parameterList.bgRect, parameterList.exportRect, objectList.leftAddRect, objectList.rightAddRect})) {
 				//detects if mouse goes over screen edge
 				Rect screenRect = new Rect(0,0, Screen.width, Screen.height);
 				if (screenRect.Contains (Input.mousePosition)) {
@@ -109,7 +109,8 @@ public class ObjectSelector : MonoBehaviour {
 						var hit = Physics.Raycast (ray.origin, ray.direction, out dragRayhit);
 
 						if (hit && !lockObj) {
-							collideObj = dragRayhit.collider.gameObject;
+							collideObj = dragRayhit.collider.transform.root.gameObject;
+
 							distance = dragRayhit.distance;
 							//Debug.Log (collideObj.name);
 						}

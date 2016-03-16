@@ -13,7 +13,9 @@ public class ObjectList : MonoBehaviour {
 	int bgHeight = 37*Screen.height/48;
 
 	public Rect bgRect;
-	
+	public Rect leftAddRect;
+	public Rect rightAddRect;
+
 	Vector2 scrollPosition;
 	
 	string[] listItems;
@@ -33,6 +35,8 @@ public class ObjectList : MonoBehaviour {
 	
 	GUIStyle customStyle;
 
+	public Rect boundingBox; 
+
 	// Use this for initialization
 	void Start () {
 		assetManager = GameObject.Find ("AssetManager").GetComponent ("AssetManager") as AssetManager;
@@ -45,11 +49,16 @@ public class ObjectList : MonoBehaviour {
 		listItems = objects.ToArray ();
 
 		bgRect = new Rect (bgLeft, bgTop, bgWidth, bgHeight);
+
+		//left and right side Add button
+		leftAddRect = new Rect(bgLeft, bgTop+bgHeight+Screen.height/48, bgWidth, 25);
+		rightAddRect = new Rect (19*bgLeft, bgTop + bgHeight + Screen.height / 48, bgWidth, 25);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+
+
 	}
 
 	void OnGUI () {
@@ -84,12 +93,14 @@ public class ObjectList : MonoBehaviour {
 		GUI.enabled = (selected != -1);
 		if (GUI.Button(new Rect(bgLeft, bgTop+bgHeight+Screen.height/48, bgWidth, 25),new GUIContent("Add"))){
 			assetManager.InstantiateObject(objectSelected);
+
 		}
 		GUI.enabled = true;
 
 		GUI.enabled = false;
 		if (GUI.Button(new Rect(bgLeft, bgTop+bgHeight+(Screen.height/48)+30, bgWidth, 25),new GUIContent("Export Assets"))){
 			assetManager.ExportAssets();
+
 		}
 		GUI.enabled = true;
 	}
