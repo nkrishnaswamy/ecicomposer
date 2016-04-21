@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class ObjectList : MonoBehaviour {
+	//testing skins - amy
+	public GUISkin customSkin;
 
 	AssetManager assetManager;
 	ParameterList parameterList;
@@ -62,6 +64,9 @@ public class ObjectList : MonoBehaviour {
 	}
 
 	void OnGUI () {
+		//testing skins - amy
+		GUI.skin = customSkin;
+
 		GUILayout.BeginArea(bgRect, GUI.skin.window);
 		scrollPosition = GUILayout.BeginScrollView(scrollPosition, false, false); 
 		GUILayout.BeginVertical (GUI.skin.box);

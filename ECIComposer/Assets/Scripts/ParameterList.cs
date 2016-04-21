@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class ParameterList : MonoBehaviour {
+	//testing skins - amy
+	public GUISkin customSkin;
 
 	public Dictionary<string, List<string>> availableParams = new Dictionary<string, List<string>>();
 
@@ -28,6 +30,7 @@ public class ParameterList : MonoBehaviour {
 	string paramSelected = "";
 
 	GUIStyle customStyle;
+
 
 	// Use this for initialization
 	void Start () {
@@ -72,6 +75,9 @@ public class ParameterList : MonoBehaviour {
 	}
 
 	void OnGUI () {
+		//testing skins - amy
+		GUI.skin = customSkin;
+
 		GUILayout.BeginArea(bgRect, GUI.skin.window);
 		scrollPosition = GUILayout.BeginScrollView(scrollPosition, false, false); 
 		GUILayout.BeginVertical (GUI.skin.box);

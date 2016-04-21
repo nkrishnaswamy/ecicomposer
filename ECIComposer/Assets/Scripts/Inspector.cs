@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using System.IO;
 
 public class Inspector : MonoBehaviour {
+	//testing skins - amy
+	public GUISkin customSkin;
+
 	public enum InspectorState {
 		Main,
 		Reify,
@@ -191,6 +194,9 @@ public class Inspector : MonoBehaviour {
 	}
 
 	void OnGUI () {
+		//testing skins - amy
+		GUI.skin = customSkin;
+
 		if (DrawInspector) {
 			inspectorPositionAdjX = inspectorPosition.x;
 			inspectorPositionAdjY = inspectorPosition.y;
